@@ -1,0 +1,26 @@
+var premise_request_for = producer.premises_requesting_for;
+var premiseGR = new GlideRecord("x_gooa_agri_premise");
+//premiseGR.addQuery('sys_id', premise_request_for);
+premiseGR.get(premise_request_for);
+premiseGR.query();
+
+if (premiseGR.next()) {
+    premiseGR.re_request_new_premise_card = producer.re_request_new_premise_card;
+    premiseGR.re_request_new_key_fob = producer.re_request_new_key_fob;
+    premiseGR.update();
+
+    premiseGR.re_request_new_premise_card = false;
+    premiseGR.re_request_new_key_fob = false;
+    premiseGR.update();
+
+
+    current.setAbortAction(true);
+}
+
+if (producer.redirect_account_review == 'true') {
+    producer.portal_redirect = '/pid?id=account_review';
+} else {
+    producer.portal_redirect = '/pid?id=premise_info&table=x_gooa_agri_premise&sys_id='+premise_request_for;
+}
+
+current.submission_type = 'Online';
