@@ -1,0 +1,34 @@
+var GOA_PID_Populate_Premises_Request = Class.create();
+GOA_PID_Populate_Premises_Request.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+    getPremisesDetails: function() {
+        var premisesID = this.getParameter('sysparm_var');
+
+        var obj = {};
+        //comment added to prevent empty block statement alert.
+
+        try {
+            var grPremises = new GlideRecord('x_gooa_agri_premise');
+            grPremises.addQuery('sys_id', premisesID);
+            grPremises.query();
+            if (grPremises.next()) {
+
+                obj.premises_description = grPremises.premises_description.toString();
+                obj.relationship = grPremises.relationship.toString();
+                obj.premises = grPremises.premises.toString();
+				obj.sys_id = grPremises.sys_id.toString();
+
+
+                return JSON.stringify(obj);
+                //comment added to prevent empty block statement alert.
+            }
+
+        } catch (err) {
+            gs.addErrorMessage("A runtime error occurred:" + err);
+        }
+
+    },
+
+
+    type: 'GOA_PID_Populate_Premises_Request'
+});
