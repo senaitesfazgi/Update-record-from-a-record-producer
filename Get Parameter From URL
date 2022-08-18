@@ -1,0 +1,17 @@
+// Widget server Script
+ data.buttonText = "";
+	data.sys_id = $sp.getParameter("sys_id");
+	var premiseID = $sp.getParameter("sys_id");
+	var currentPremise = new GlideRecord('x_gooa_agri_premise');
+	currentPremise.get(premiseID);
+	currentPremise.query();
+	if(currentPremise.next()){
+			if (currentPremise.pid_card_required == true && currentPremise.pid_fob_required == true)
+			{
+				data.hideButton = false;
+				data.buttonText = "Request PID Materials";
+			}
+		else{
+			data.hideButton = true;
+		}
+	}
