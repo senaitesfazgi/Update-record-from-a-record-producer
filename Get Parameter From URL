@@ -15,3 +15,7 @@
 			data.hideButton = true;
 		}
 	}
+
+//HTML Widget
+
+     <a href="/pid?id=sc_cat_item&amp;sys_id=6924931b1b3095181738eb17ec4bcb5e&premise={{data.sys_id}}"><button class="btn btn-primary action-btn pull-right" ng-hide="data.hideButton">{{data.buttonText}}</button></a>
