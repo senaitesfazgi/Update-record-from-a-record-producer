@@ -1,0 +1,59 @@
+//Catalog client script
+
+function onLoad() {
+
+    //Use the 'getParameterValue' function below to get the parameter values from the URL   
+
+    var premise_request_for = getParameterValue('premise');
+
+    var getPremisesDetails = new GlideAjax('GOA_PID_Populate_Premises_Request');
+	getPremisesDetails.addParam('sysparm_name', 'getPremisesDetails');
+    getPremisesDetails.addParam('sysparm_var', premise_request_for);
+    getPremisesDetails.getXML(getResponse);
+
+    function getResponse(response) {
+        var answer = response.responseXML.documentElement.getAttribute("answer");
+        var res = JSON.parse(answer);
+
+        if (answer != '') {
+            //g_form.addInfoMessage(answer + 'YES');
+            g_form.setValue('premises_description', res.premises_description);
+			g_form.setReadOnly('premises_description', true);
+			
+			g_form.setValue('premises', res.premises);
+			g_form.setReadOnly('premises', true);
+			
+			g_form.setValue('relationship', res.relationship);
+			g_form.setReadOnly('relationship', true);
+			
+			g_form.setValue('premise_number', res.sys_id);
+			g_form.setReadOnly('premise_number', true);
+			g_form.setVisible('premise_number', true);
+        } else {
+            g_form.addInfoMessage(answer + 'NO');
+        }
+    }
+
+//get the value of premise using regex expression
+    function getParameterValue(name) {
+
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+
+        var regex = new RegExp(regexS);
+
+        var results = regex.exec(top.location);
+
+        if (results == null) {
+
+            return "";
+
+        } else {
+
+            return unescape(results[1]);
+
+        }
+    }
+
+}
